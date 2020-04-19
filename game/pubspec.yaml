@@ -1,0 +1,21 @@
+name: life2
+description: Life finds a way. Version two of the Life game.
+
+publish_to: 'none'
+
+version: 0.1.0
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flame: ^0.19.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: false
