@@ -1,6 +1,7 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
+import 'components/hud.dart';
 import 'components/world.dart';
 import 'constants.dart';
 
@@ -14,6 +15,7 @@ class MyGame extends BaseGame {
   double get blockSize => DEFAULT_CELL_SIZE;
 
   MyGame() {
+    add(Hud());
     add(World.empty(GRID_WIDTH, GRID_HEIGHT));
   }
 }

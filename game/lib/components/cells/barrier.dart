@@ -1,7 +1,7 @@
 import 'dart:ui';
 
-import '../constants.dart';
-import '../palette.dart';
+import '../../constants.dart';
+import '../../palette.dart';
 import 'cell.dart';
 
 class Barrier extends Cell {

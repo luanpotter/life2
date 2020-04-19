@@ -6,10 +6,10 @@ import 'package:flame/components/mixins/has_game_ref.dart';
 import '../constants.dart';
 import '../main.dart';
 import '../matrix.dart';
-import 'barrier.dart';
-import 'cell.dart';
-import 'empty.dart';
-import 'food.dart';
+import 'cells/barrier.dart';
+import 'cells/cell.dart';
+import 'cells/empty.dart';
+import 'cells/food.dart';
 
 class World extends Component with HasGameRef<MyGame> {
 

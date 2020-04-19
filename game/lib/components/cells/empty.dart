@@ -1,13 +1,13 @@
 import 'dart:ui';
 
-import '../constants.dart';
-import '../palette.dart';
+import 'package:life2/constants.dart';
+
+import '../../palette.dart';
 import 'cell.dart';
 
-class Food extends Cell {
+class Empty extends Cell {
   static final paint1 = Palette.grid.paint;
   static final paint2 = Palette.black.paint;
-  static final paint3 = Palette.food.paint;
 
   static const size1 = const Rect.fromLTWH(0.0, 0.0, DEFAULT_CELL_SIZE, DEFAULT_CELL_SIZE);
   static final size2 = size1.deflate(2.0);
@@ -17,6 +17,6 @@ class Food extends Cell {
   void render(Canvas c) {
     c.drawRect(size1, paint1);
     c.drawRect(size2, paint2);
-    c.drawRect(size3, paint3);
+    c.drawRect(size3, paint1);
   }
 }
