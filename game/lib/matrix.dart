@@ -11,6 +11,23 @@ class Matrix<T> {
     return data[i][j];
   }
 
+  T getElementOrNull(int i, int j) {
+    if (contains(i, j)) {
+      return getElement(i, j);
+    }
+    return null;
+  }
+
+  bool contains(int i, int j) {
+    if (i < 0 || i >= data.length) {
+      return false;
+    }
+    if (j < 0 || j >= data[i].length) {
+      return false;
+    }
+    return true;
+  }
+
   void setElement(int i, int j, T t) {
     data[i][j] = t;
   }

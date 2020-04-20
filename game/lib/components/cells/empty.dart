@@ -19,4 +19,7 @@ class Empty extends Cell {
     c.drawRect(size2, paint2);
     c.drawRect(size3, paint1);
   }
+
+  @override
+  String get type => 'Empty';
 }

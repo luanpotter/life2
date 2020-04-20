@@ -7,4 +7,7 @@ class Life extends Cell {
   void render(Canvas c) {
     // TODO: implement render
   }
+
+  @override
+  String get type => 'Life...';
 }

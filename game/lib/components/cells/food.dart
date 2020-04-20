@@ -19,4 +19,7 @@ class Food extends Cell {
     c.drawRect(size2, paint2);
     c.drawRect(size3, paint3);
   }
+
+  @override
+  String get type => 'Food';
 }

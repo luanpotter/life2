@@ -1,13 +1,15 @@
 import 'dart:ui';
 
 import 'package:flame/components/component.dart';
+import 'package:flame/components/mixins/has_game_ref.dart';
 import 'package:flame/components/mixins/resizable.dart';
 import 'package:flame/position.dart';
 
 import '../constants.dart';
+import '../game.dart';
 import '../palette.dart';
 
-class Hud extends Component with Resizable {
+class Hud extends Component with Resizable, HasGameRef<MyGame> {
   @override
   void render(Canvas c) {
     final hudArea = Rect.fromLTWH(0.8 * size.width, 0.0, 0.2 * size.width, size.height);
@@ -19,6 +21,11 @@ class Hud extends Component with Resizable {
     c.drawRect(selectedBlock.deflate(2.0), Palette.black.paint);
 
     text.render(c, 'Selected Block', Position.fromOffset(selectedBlock.topLeft).add(Position(4.0, 4.0)));
+    final cell = gameRef.selectedCell;
+    if (cell.isSelected()) {
+      Position p = Position.fromOffset(selectedBlock.topLeft).add(Position(4.0, 24.0));
+      text.render(c, 'Cell [${cell.i}, ${cell.j}]: ${cell.cell.type}', p);
+    }
   }
 
   @override

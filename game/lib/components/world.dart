@@ -29,6 +29,10 @@ class World extends Component with HasGameRef<MyGame> {
     updateBoard();
   }
 
+  Cell getCell(int i, int j) {
+    return cells.getElementOrNull(i, j);
+  }
+
   Future<Image> _redrawCache() {
     final w = cells.width * DEFAULT_CELL_SIZE;
     final h = cells.height * DEFAULT_CELL_SIZE;
