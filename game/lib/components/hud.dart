@@ -60,8 +60,11 @@ class Hud extends Component with Resizable, HasGameRef<MyGame> {
         clicks[Rect.fromLTWH(x + 2 * m, y, s, s)] = () => selectedTool = CellType.FOOD;
       }
     });
-    
     toolsBlock.render(c, size);
+
+    final optionsBlock = toolsBlock.after(4.0);
+    optionsBlock.println('Options (TODO)');
+    optionsBlock.render(c, size);
   }
 
   @override
