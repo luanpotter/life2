@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'cell.dart';
+import 'cell_type.dart';
 
 class Life extends Cell {
   @override
@@ -9,5 +10,5 @@ class Life extends Cell {
   }
 
   @override
-  String get type => 'Life...';
+  CellType get type => CellType.LIFE;
 }

@@ -6,4 +6,3 @@ void main() {
   final game = MyGame();
   runApp(game.widget);
 }
-

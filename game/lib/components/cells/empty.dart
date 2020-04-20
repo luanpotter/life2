@@ -4,6 +4,7 @@ import 'package:life2/constants.dart';
 
 import '../../palette.dart';
 import 'cell.dart';
+import 'cell_type.dart';
 
 class Empty extends Cell {
   static final paint1 = Palette.grid.paint;
@@ -21,5 +22,5 @@ class Empty extends Cell {
   }
 
   @override
-  String get type => 'Empty';
+  CellType get type => CellType.EMPTY;
 }

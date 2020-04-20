@@ -3,6 +3,7 @@ import 'dart:ui';
 import '../../constants.dart';
 import '../../palette.dart';
 import 'cell.dart';
+import 'cell_type.dart';
 
 class Food extends Cell {
   static final paint1 = Palette.grid.paint;
@@ -21,5 +22,5 @@ class Food extends Cell {
   }
 
   @override
-  String get type => 'Food';
+  CellType get type => CellType.FOOD;
 }

@@ -3,6 +3,7 @@ import 'dart:ui';
 import '../../constants.dart';
 import '../../palette.dart';
 import 'cell.dart';
+import 'cell_type.dart';
 
 class Barrier extends Cell {
   static final paint1 = Palette.grid.paint;
@@ -21,5 +22,5 @@ class Barrier extends Cell {
   }
 
   @override
-  String get type => 'Barrier';
+  CellType get type => CellType.BARRIER;
 }

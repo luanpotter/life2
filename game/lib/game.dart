@@ -5,26 +5,32 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 
 import 'components/cells/cell.dart';
+import 'components/cells/cell_type.dart';
 import 'components/hud.dart';
 import 'components/selected_cell.dart';
 import 'components/world.dart';
 import 'constants.dart';
 
-class MyGame extends BaseGame with KeyboardEvents, DoubleTapDetector, PanDetector {
+class MyGame extends BaseGame with KeyboardEvents, DoubleTapDetector, SecondaryTapDetector, PanDetector {
 
+  Hud hud;
   World world;
   SelectedCell selectedCell;
 
   double blockSize = DEFAULT_CELL_SIZE;
 
   MyGame() {
-    add(Hud());
+    add(hud = Hud());
     add(world = World.empty(GRID_WIDTH, GRID_HEIGHT));
     add(selectedCell = SelectedCell());
   }
 
   @override
   void onTapDown(TapDownDetails details) {
+    if (hud.handleTap(details.localPosition)) {
+      return;
+    }
+
     int i = (details.localPosition.dx + camera.x) ~/ blockSize;
     int j = (details.localPosition.dy + camera.y) ~/ blockSize;
     
@@ -70,5 +76,18 @@ class MyGame extends BaseGame with KeyboardEvents, DoubleTapDetector, PanDetecto
   void onPanUpdate(DragUpdateDetails details) {
     camera.x -= details.delta.dx;
     camera.y -= details.delta.dy;
+  }
+
+  @override
+  void onSecondaryTapDown(TapDownDetails details) {
+    int i = (details.localPosition.dx + camera.x) ~/ blockSize;
+    int j = (details.localPosition.dy + camera.y) ~/ blockSize;
+    
+    Cell cell = world.getCell(i, j);
+    if (cell != null) {
+      final newCell = hud.selectedTool.newCell();
+      world.cells.setElement(i, j, newCell);
+      world.updateBoard();
+    }
   }
 }
