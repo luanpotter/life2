@@ -22,4 +22,8 @@ class Matrix<T> {
       }
     }
   }
+
+  int get width => data.length;
+
+  int get height => data[0].length;
 }
