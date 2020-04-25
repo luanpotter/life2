@@ -25,7 +25,7 @@ class Food extends Cell {
   Food(this.growthRate, this.currentNutrients, this.maxNutrients);
 
   Food.random() {
-    this.growthRate = 0.05 * R.nextInt(4);
+    this.growthRate = 0.5 * R.nextInt(4);
     this.currentNutrients = 0.0;
     this.maxNutrients = 10.0 - R.nextInt(4);
   }
@@ -35,7 +35,8 @@ class Food extends Cell {
     c.drawRect(size1, paint1);
     c.drawRect(size2, paint2);
 
-    final deltaSize = (DEFAULT_CELL_SIZE - 6.0) * currentNutrients / MAX_NUTRIENTS;
+    final maxSize = (DEFAULT_CELL_SIZE - 12.0) / 2;
+    final deltaSize = (maxSize * (1 - currentNutrients / MAX_NUTRIENTS)).clamp(0.0, maxSize - 2.0);
     c.drawRect(size3.deflate(deltaSize), paint3);
   }
 
