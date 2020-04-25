@@ -9,6 +9,10 @@ class Life extends Cell {
     // TODO: implement render
   }
 
+  void tick() {
+    // TODO: implement tick
+  }
+
   @override
   CellType get type => CellType.LIFE;
 }

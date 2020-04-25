@@ -17,15 +17,16 @@ class World extends Component with HasGameRef<MyGame> {
   static final _paint = Palette.white.paint..filterQuality = FilterQuality.high;
 
   static final emptyCell = Empty();
-  static final foodCell = Food();
   static final barrierCell = Barrier();
 
   Matrix<Cell> cells;
   Image _cache;
 
+  bool _destroy = false;
+
   World.empty(int width, int height) {
     cells = Matrix.filled(width, height, emptyCell);
-    List.generate(100, (index) => cells.setElement(R.nextInt(width), R.nextInt(height), R.nextBool() ? foodCell : barrierCell));
+    List.generate(100, (index) => cells.setElement(R.nextInt(width), R.nextInt(height), R.nextBool() ? Food.random() : barrierCell));
     updateBoard();
   }
 
@@ -68,4 +69,14 @@ class World extends Component with HasGameRef<MyGame> {
   void update(double dt) {
     // TODO: implement update
   }
+
+  @override
+  bool destroy() => _destroy;
+
+  void doDestroy() {
+    _destroy = true;
+  }
+
+  @override
+  int priority() => 0;
 }

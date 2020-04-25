@@ -6,6 +6,9 @@ import 'package:flutter/painting.dart';
 import '../palette.dart';
 
 typedef Renderer = void Function(Canvas, double, double);
+typedef Handler = void Function();
+
+final _buttonBorder = Palette.accent.paint..strokeWidth = 2.0..style = PaintingStyle.stroke;
 
 class _Line {
   double x;
@@ -37,6 +40,17 @@ class Lines {
   void println(String text) {
     final tp = textConfig.toTextPainter(text);
     _lines.add(_Line(x, y, tp.height, (c, x, y) => tp.paint(c, Offset(x, y))));
+    y += tp.height + margin;
+  }
+
+  void button(String text, Map<Rect, Handler> clicks, Handler handler) {
+    final tp = textConfig.toTextPainter(text);
+    _lines.add(_Line(x, y, tp.height, (c, x, y) {
+      Rect rect = Rect.fromLTWH(x, y, tp.width + 4.0, tp.height + 4.0);
+      c.drawRect(rect, _buttonBorder);
+      tp.paint(c, Offset(x + 2.0, y + 2.0));
+      clicks[rect] = handler;
+    }));
     y += tp.height + margin;
   }
 

@@ -21,6 +21,8 @@ class Empty extends Cell {
     c.drawRect(size3, paint1);
   }
 
+  void tick() {}
+
   @override
   CellType get type => CellType.EMPTY;
 }

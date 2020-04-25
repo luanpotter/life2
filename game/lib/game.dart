@@ -25,6 +25,24 @@ class MyGame extends BaseGame with KeyboardEvents, DoubleTapDetector, SecondaryT
     add(selectedCell = SelectedCell());
   }
 
+  void resetWorld() {
+    world.doDestroy();
+    add(world = World.empty(GRID_WIDTH, GRID_HEIGHT));
+    clearSelector();
+  }
+
+  void resetCamera() {
+    this.camera.x = 0.0;
+    this.camera.y = 0.0;
+    this.blockSize = DEFAULT_CELL_SIZE;
+  }
+
+  void clearSelector() {
+    selectedCell.cell = null;
+    selectedCell.i = null;
+    selectedCell.j = null;
+  }
+
   @override
   void onTapDown(TapDownDetails details) {
     if (hud.handleTap(details.localPosition)) {
@@ -36,9 +54,7 @@ class MyGame extends BaseGame with KeyboardEvents, DoubleTapDetector, SecondaryT
     
     Cell cell = world.getCell(i, j);
     if (cell == null) {
-      selectedCell.cell = null;
-      selectedCell.i = null;
-      selectedCell.j = null;
+      clearSelector();
     } else {
       selectedCell.cell = cell;
       selectedCell.i = i;

@@ -8,13 +8,14 @@ import '../constants.dart';
 import '../game.dart';
 import '../palette.dart';
 import 'cells/cell_type.dart';
+import 'cells/food.dart';
 import 'lines.dart';
 import 'selected_cell.dart';
 import 'world.dart';
 
 class Hud extends Component with Resizable, HasGameRef<MyGame> {
   CellType selectedTool = CellType.EMPTY;
-  Map<Rect, void Function()> clicks = {};
+  Map<Rect, Handler> clicks = {};
 
   @override
   void render(Canvas c) {
@@ -53,7 +54,7 @@ class Hud extends Component with Resizable, HasGameRef<MyGame> {
         clicks[Rect.fromLTWH(x + m, y, s, s)] = () => selectedTool = CellType.BARRIER;
       }
       c.translate(m, 0.0);
-      World.foodCell.render(c);
+      Food.sampleFood.render(c);
       if (selectedTool == CellType.FOOD) {
         SelectedCell.staticRender(c, selector);
       } else {
@@ -63,7 +64,9 @@ class Hud extends Component with Resizable, HasGameRef<MyGame> {
     toolsBlock.render(c, size);
 
     final optionsBlock = toolsBlock.after(4.0);
-    optionsBlock.println('Options (TODO)');
+    optionsBlock.println('Options');
+    optionsBlock.button('New World', clicks, () => gameRef.resetWorld());
+    optionsBlock.button('Reset Camera', clicks, () => gameRef.resetCamera());
     optionsBlock.render(c, size);
   }
 

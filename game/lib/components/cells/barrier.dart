@@ -21,6 +21,8 @@ class Barrier extends Cell {
     c.drawRect(size3, paint3);
   }
 
+  void tick() {}
+
   @override
   CellType get type => CellType.BARRIER;
 }

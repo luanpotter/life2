@@ -14,11 +14,33 @@ class Food extends Cell {
   static final size2 = size1.deflate(2.0);
   static final size3 = size2.deflate(4.0);
 
+  static const MAX_NUTRIENTS = 10.0;
+
+  static final sampleFood = Food(0.0, 10.0, 10.0);
+
+  double growthRate;
+  double currentNutrients;
+  double maxNutrients;
+
+  Food(this.growthRate, this.currentNutrients, this.maxNutrients);
+
+  Food.random() {
+    this.growthRate = 0.05 * R.nextInt(4);
+    this.currentNutrients = 0.0;
+    this.maxNutrients = 10.0 - R.nextInt(4);
+  }
+
   @override
   void render(Canvas c) {
     c.drawRect(size1, paint1);
     c.drawRect(size2, paint2);
-    c.drawRect(size3, paint3);
+
+    final deltaSize = (DEFAULT_CELL_SIZE - 6.0) * currentNutrients / MAX_NUTRIENTS;
+    c.drawRect(size3.deflate(deltaSize), paint3);
+  }
+
+  void tick() {
+    currentNutrients = (currentNutrients + growthRate).clamp(0.0, maxNutrients);
   }
 
   @override

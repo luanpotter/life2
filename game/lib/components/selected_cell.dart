@@ -34,4 +34,7 @@ class SelectedCell extends Component with HasGameRef<MyGame> {
   
   @override
   void update(double dt) {}
+
+  @override
+  int priority() => 1;
 }
