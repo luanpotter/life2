@@ -77,6 +77,15 @@ class World extends Component with HasGameRef<MyGame> {
     _destroy = true;
   }
 
+  void tickOnce() {
+    tick();
+    updateBoard();
+  }
+
+  void tick() {
+    cells.forEach((i, j, cell) => cell.tick());
+  }
+
   @override
   int priority() => 0;
 }

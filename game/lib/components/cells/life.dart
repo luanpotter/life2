@@ -13,6 +13,8 @@ class Life extends Cell {
     // TODO: implement tick
   }
 
+  String describe() => "A simple life. TODO";
+
   @override
   CellType get type => CellType.LIFE;
 }

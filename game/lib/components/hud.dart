@@ -30,6 +30,7 @@ class Hud extends Component with Resizable, HasGameRef<MyGame> {
     final cell = gameRef.selectedCell;
     if (cell.isSelected()) {
       selectedBlock.println('Cell [${cell.i}, ${cell.j}]: ${cell.cell.type}');
+      selectedBlock.println(cell.cell.describe());
     }
     selectedBlock.render(c, size);
 
@@ -67,6 +68,7 @@ class Hud extends Component with Resizable, HasGameRef<MyGame> {
     optionsBlock.println('Options');
     optionsBlock.button('New World', clicks, () => gameRef.resetWorld());
     optionsBlock.button('Reset Camera', clicks, () => gameRef.resetCamera());
+    optionsBlock.button('Tick Once', clicks, () => gameRef.world.tickOnce());
     optionsBlock.render(c, size);
   }
 

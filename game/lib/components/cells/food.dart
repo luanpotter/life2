@@ -43,6 +43,8 @@ class Food extends Cell {
     currentNutrients = (currentNutrients + growthRate).clamp(0.0, maxNutrients);
   }
 
+  String describe() => "$currentNutrients / $maxNutrients nutrients [+ $growthRate nutrients/tick]";
+
   @override
   CellType get type => CellType.FOOD;
 }

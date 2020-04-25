@@ -23,6 +23,8 @@ class Barrier extends Cell {
 
   void tick() {}
 
+  String describe() => "An insurmountable barrier";
+
   @override
   CellType get type => CellType.BARRIER;
 }

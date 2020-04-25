@@ -23,6 +23,8 @@ class Empty extends Cell {
 
   void tick() {}
 
+  String describe() => "Nothingness.";
+
   @override
   CellType get type => CellType.EMPTY;
 }
