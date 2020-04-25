@@ -8,7 +8,8 @@ import 'cell_type.dart';
 class Food extends Cell {
   static final paint1 = Palette.grid.paint;
   static final paint2 = Palette.black.paint;
-  static final paint3 = Palette.food.paint;
+  static final paint3 = Palette.grid.paint;
+  static final paint4 = Palette.food.paint;
 
   static const size1 = const Rect.fromLTWH(0.0, 0.0, DEFAULT_CELL_SIZE, DEFAULT_CELL_SIZE);
   static final size2 = size1.deflate(2.0);
@@ -34,10 +35,11 @@ class Food extends Cell {
   void render(Canvas c) {
     c.drawRect(size1, paint1);
     c.drawRect(size2, paint2);
+    c.drawRect(size3, paint3);
 
     final maxSize = (DEFAULT_CELL_SIZE - 12.0) / 2;
     final deltaSize = (maxSize * (1 - currentNutrients / MAX_NUTRIENTS)).clamp(0.0, maxSize - 2.0);
-    c.drawRect(size3.deflate(deltaSize), paint3);
+    c.drawRect(size3.deflate(deltaSize), paint4);
   }
 
   void tick() {
