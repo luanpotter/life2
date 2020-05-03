@@ -116,6 +116,7 @@ class Hud extends Component with Resizable, HasGameRef<MyGame> {
     optionsBlock.println('Options');
     optionsBlock.button('New World', clicks, () => gameRef.resetWorld());
     optionsBlock.button('Reset Camera', clicks, () => gameRef.resetCamera());
+    optionsBlock.println('Version: ${GIT_TAG.replaceFirst('gitVersionTag:', '')}');
     optionsBlock.render(c, size);
   }
 

@@ -15,3 +15,6 @@ final text = TextConfig(
   fontSize: 16.0,
   fontFamily: 'Chonkly',
 );
+
+// this will be replaced by the deploy script
+const GIT_TAG = 'gitVersionTag:dev';
