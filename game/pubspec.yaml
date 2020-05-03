@@ -12,13 +12,14 @@ dependencies:
   flutter:
     sdk: flutter
   flame: ^0.19.1
+  flutter_form_builder: ^3.8.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
 flutter:
-  uses-material-design: false
+  uses-material-design: true
   fonts:
     - family: Chonkly
       fonts:

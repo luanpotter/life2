@@ -11,6 +11,7 @@ import 'cells/barrier.dart';
 import 'cells/cell.dart';
 import 'cells/empty.dart';
 import 'cells/food.dart';
+import 'ui/new_world_modal.dart';
 
 class World extends Component with HasGameRef<MyGame> {
 
@@ -27,6 +28,28 @@ class World extends Component with HasGameRef<MyGame> {
   World.empty(int width, int height) {
     cells = Matrix.filled(width, height, emptyCell);
     List.generate(100, (index) => cells.setElement(R.nextInt(width), R.nextInt(height), R.nextBool() ? Food.random() : barrierCell));
+    updateBoard();
+  }
+
+  World(Map<String, dynamic> data) {
+    int width = int.parse(data['width']);
+    int height = int.parse(data['height']);
+    NewWorldType type = data['worldType'];
+    int randomFood = int.parse(data['randomFood']);
+    int randomBarrier = int.parse(data['randomBarrier']);
+    cells = Matrix.filled(width, height, emptyCell);
+    if (type == NewWorldType.BORDERED) {
+      for (int i = 0; i < width; i++) {
+        cells.setElement(i, 0, barrierCell);
+        cells.setElement(i, height - 1, barrierCell);
+      }
+      for (int i = 0; i < height; i++) {
+        cells.setElement(0, i, barrierCell);
+        cells.setElement(width - 1, i, barrierCell);
+      }
+    }
+    List.generate(randomFood, (index) => cells.setElement(R.nextInt(width - 2) + 1, R.nextInt(height - 2) + 1, Food.random()));
+    List.generate(randomBarrier, (index) => cells.setElement(R.nextInt(width - 2) + 1, R.nextInt(height - 2) + 1, barrierCell));
     updateBoard();
   }
 

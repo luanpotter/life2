@@ -8,10 +8,11 @@ import 'components/cells/cell.dart';
 import 'components/cells/cell_type.dart';
 import 'components/hud.dart';
 import 'components/selected_cell.dart';
+import 'components/ui/new_world_modal.dart';
 import 'components/world.dart';
 import 'constants.dart';
 
-class MyGame extends BaseGame with KeyboardEvents, DoubleTapDetector, SecondaryTapDetector, PanDetector {
+class MyGame extends BaseGame with HasWidgetsOverlay, KeyboardEvents, DoubleTapDetector, SecondaryTapDetector, PanDetector {
 
   Hud hud;
   World world;
@@ -26,9 +27,17 @@ class MyGame extends BaseGame with KeyboardEvents, DoubleTapDetector, SecondaryT
   }
 
   void resetWorld() {
-    world.doDestroy();
-    add(world = World.empty(GRID_WIDTH, GRID_HEIGHT));
-    clearSelector();
+    addWidgetOverlay('NewWorldModal', NewWorldModal(
+      createCallback: (Map<String, dynamic> data) {
+        world.doDestroy();
+        add(world = World(data));
+        clearSelector();
+        removeWidgetOverlay('NewWorldModal');
+      },
+      cancelCallback: () {
+        removeWidgetOverlay('NewWorldModal');
+      },
+    ));
   }
 
   void resetCamera() {

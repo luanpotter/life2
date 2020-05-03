@@ -4,5 +4,12 @@ import 'game.dart';
 
 void main() {
   final game = MyGame();
-  runApp(game.widget);
+  runApp(
+    MaterialApp(
+      initialRoute: '/',
+      routes: {
+        '/': (_) => game.widget,
+      },
+    ),
+  );
 }
