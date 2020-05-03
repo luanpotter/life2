@@ -9,12 +9,14 @@ import '../game.dart';
 import '../palette.dart';
 import 'cells/cell_type.dart';
 import 'cells/food.dart';
+import 'cells/life.dart';
 import 'lines.dart';
 import 'selected_cell.dart';
 import 'world.dart';
 
 class Hud extends Component with Resizable, HasGameRef<MyGame> {
   CellType selectedTool = CellType.EMPTY;
+  int selectedToolRow = 0;
   Map<Rect, Handler> clicks = {};
 
   @override
@@ -36,30 +38,61 @@ class Hud extends Component with Resizable, HasGameRef<MyGame> {
 
     final toolsBlock = selectedBlock.after(4.0);
     toolsBlock.println('Tools (Right Click)');
+    toolsBlock.println('Default');
     const s = DEFAULT_CELL_SIZE;
     const selector = const Rect.fromLTWH(0.0, 0.0, s, s);
     final m = 8.0 + DEFAULT_CELL_SIZE;
+    void addClick(double x, double y, int row, CellType tool) {
+      clicks[Rect.fromLTWH(x, y, s, s)] = () {
+        selectedToolRow = row;
+        selectedTool = tool;
+      };
+    }
     toolsBlock.customRender(m, (c, x, y) {
       c.translate(x, y);
       World.emptyCell.render(c);
-      if (selectedTool == CellType.EMPTY) {
+      if (selectedToolRow == 0 && selectedTool == CellType.EMPTY) {
         SelectedCell.staticRender(c, selector);
       } else {
-        clicks[Rect.fromLTWH(x, y, s, s)] = () => selectedTool = CellType.EMPTY;
+        addClick(x, y, 0, CellType.EMPTY);
       }
       c.translate(m, 0.0);
       World.barrierCell.render(c);
-      if (selectedTool == CellType.BARRIER) {
+      if (selectedToolRow == 0 && selectedTool == CellType.BARRIER) {
         SelectedCell.staticRender(c, selector);
       } else {
-        clicks[Rect.fromLTWH(x + m, y, s, s)] = () => selectedTool = CellType.BARRIER;
+        addClick(x + m, y, 0, CellType.BARRIER);
       }
       c.translate(m, 0.0);
       Food.sampleFood.render(c);
-      if (selectedTool == CellType.FOOD) {
+      if (selectedToolRow == 0 && selectedTool == CellType.FOOD) {
         SelectedCell.staticRender(c, selector);
       } else {
-        clicks[Rect.fromLTWH(x + 2 * m, y, s, s)] = () => selectedTool = CellType.FOOD;
+        addClick(x + 2 * m, y, 0, CellType.FOOD);
+      }
+      c.translate(m, 0.0);
+      Life.sampleLife.render(c);
+      if (selectedToolRow == 0 && selectedTool == CellType.LIFE) {
+        SelectedCell.staticRender(c, selector);
+      } else {
+        addClick(x + 3 * m, y, 0, CellType.LIFE);
+      }
+    });
+    toolsBlock.println('Custom');
+    toolsBlock.customRender(m, (c, x, y) {
+      c.translate(x + 2 * m, y);
+      Food.sampleFood.render(c);
+      if (selectedToolRow == 1 && selectedTool == CellType.FOOD) {
+        SelectedCell.staticRender(c, selector);
+      } else {
+        addClick(x + 2 * m, y, 1, CellType.FOOD);
+      }
+      c.translate(m, 0.0);
+      Life.sampleLife.render(c);
+      if (selectedToolRow == 1 && selectedTool == CellType.LIFE) {
+        SelectedCell.staticRender(c, selector);
+      } else {
+        addClick(x + 3 * m, y, 1, CellType.LIFE);
       }
     });
     toolsBlock.render(c, size);

@@ -6,8 +6,12 @@ import 'package:flutter/services.dart';
 
 import 'components/cells/cell.dart';
 import 'components/cells/cell_type.dart';
+import 'components/cells/food.dart';
+import 'components/cells/life.dart';
 import 'components/hud.dart';
 import 'components/selected_cell.dart';
+import 'components/ui/base_modal.dart';
+import 'components/ui/new_food_modal.dart';
 import 'components/ui/new_world_modal.dart';
 import 'components/world.dart';
 import 'constants.dart';
@@ -26,18 +30,25 @@ class MyGame extends BaseGame with HasWidgetsOverlay, KeyboardEvents, DoubleTapD
     add(selectedCell = SelectedCell());
   }
 
-  void resetWorld() {
-    addWidgetOverlay('NewWorldModal', NewWorldModal(
-      createCallback: (Map<String, dynamic> data) {
-        world.doDestroy();
-        add(world = World(data));
-        clearSelector();
-        removeWidgetOverlay('NewWorldModal');
+  void displayModal(String modal, void Function(Map<String, dynamic>) handler) {
+    addWidgetOverlay('modal-$modal', BaseModal.create(
+      modal,
+      (Map<String, dynamic> data) {
+        handler(data);
+        removeWidgetOverlay('modal-$modal');
       },
-      cancelCallback: () {
-        removeWidgetOverlay('NewWorldModal');
+      () {
+        removeWidgetOverlay('modal-$modal');
       },
     ));
+  }
+
+  void resetWorld() {
+    displayModal('NewWorldModal', (data) {
+      world.doDestroy();
+      add(world = World(data));
+      clearSelector();
+    });
   }
 
   void resetCamera() {
@@ -110,9 +121,23 @@ class MyGame extends BaseGame with HasWidgetsOverlay, KeyboardEvents, DoubleTapD
     
     Cell cell = world.getCell(i, j);
     if (cell != null) {
-      final newCell = hud.selectedTool.newCell();
-      world.cells.setElement(i, j, newCell);
-      world.updateBoard();
+      if (hud.selectedToolRow == 0) {
+        Cell newCell = hud.selectedTool.newCell();
+        world.cells.setElement(i, j, newCell);
+        world.updateBoard();
+      } else if (hud.selectedTool == CellType.FOOD) {
+        displayModal('NewFoodModal', (data) {
+            Cell newCell = Food.fromData(data);
+            world.cells.setElement(i, j, newCell);
+            world.updateBoard();
+        });
+      } else if (hud.selectedTool == CellType.LIFE) {
+        displayModal('NewLifeModal', (data) {
+            Cell newCell = Life.fromData(data);
+            world.cells.setElement(i, j, newCell);
+            world.updateBoard();
+        });
+      }
     }
   }
 }

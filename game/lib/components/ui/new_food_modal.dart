@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
-import '../../constants.dart';
 import 'base_modal.dart';
-
-enum NewWorldType { EMPTY, BORDERED }
 
 final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
 
-class NewWorldModal extends BaseModal {
+class NewFoodModal extends BaseModal {
 
-  const NewWorldModal({
+  const NewFoodModal({
     Key key,
     @required createCallback,
     @required cancelCallback,
@@ -22,66 +19,49 @@ class NewWorldModal extends BaseModal {
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-      title: const Text('New World'),
+      title: const Text('New Food'),
       titlePadding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
       contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
       children: [
         FormBuilder(
           key: _formKey,
           initialValue: {
-            'width': '$GRID_WIDTH',
-            'height': '$GRID_HEIGHT',
-            'worldType': NewWorldType.EMPTY,
-            'randomFood': '20',
-            'randomBarrier': '20',
+            'growthRate': '1.0',
+            'currentNutrients': '0',
+            'maxNutrients': '8.0',
           },
           autovalidate: true,
           child: Column(
             children: [
+              Text('Food Sources have nutrients (their size) that grows per tick. Nutrient is a number between 1 and 10 always.'),
               FormBuilderTextField(
-                attribute: 'width',
-                decoration: InputDecoration(labelText: 'Width'),
-                validators: [
-                  FormBuilderValidators.required(),
-                  FormBuilderValidators.numeric(),
-                  FormBuilderValidators.min(1),
-                ],
-              ),
-              FormBuilderTextField(
-                attribute: 'height',
-                decoration: InputDecoration(labelText: 'Height'),
-                validators: [
-                  FormBuilderValidators.required(),
-                  FormBuilderValidators.numeric(),
-                  FormBuilderValidators.min(1),
-                ],
-              ),
-              FormBuilderDropdown(
-                attribute: 'worldType',
-                decoration: InputDecoration(labelText: 'World Type'),
-                hint: Text('Choose World Type'),
-                validators: [FormBuilderValidators.required()],
-                items: NewWorldType.values
-                    .map((value) =>
-                        DropdownMenuItem(value: value, child: Text('$value')))
-                    .toList(),
-              ),
-              FormBuilderTextField(
-                attribute: 'randomFood',
-                decoration: InputDecoration(labelText: 'Random Food Sources'),
+                attribute: 'growthRate',
+                decoration: InputDecoration(labelText: 'Growth Rate', hintText: 'Nutrient growth per tick (0-10)'),
                 validators: [
                   FormBuilderValidators.required(),
                   FormBuilderValidators.numeric(),
                   FormBuilderValidators.min(0),
+                  FormBuilderValidators.max(10),
                 ],
               ),
               FormBuilderTextField(
-                attribute: 'randomBarrier',
-                decoration: InputDecoration(labelText: 'Random Barriers'),
+                attribute: 'currentNutrients',
+                decoration: InputDecoration(labelText: 'Current Nutrients', hintText: 'Starting nutrients (0-10)'),
                 validators: [
                   FormBuilderValidators.required(),
                   FormBuilderValidators.numeric(),
                   FormBuilderValidators.min(0),
+                  FormBuilderValidators.max(10),
+                ],
+              ),
+              FormBuilderTextField(
+                attribute: 'maxNutrients',
+                decoration: InputDecoration(labelText: 'Max Nutrients', hintText: 'Maximum nutrients this food source can ever have (0-10)'),
+                validators: [
+                  FormBuilderValidators.required(),
+                  FormBuilderValidators.numeric(),
+                  FormBuilderValidators.min(0),
+                  FormBuilderValidators.max(10),
                 ],
               ),
               buttonRow(),

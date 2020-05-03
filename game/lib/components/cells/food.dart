@@ -25,6 +25,12 @@ class Food extends Cell {
 
   Food(this.growthRate, this.currentNutrients, this.maxNutrients);
 
+  Food.fromData(Map<String, dynamic> data) {
+    this.maxNutrients = double.parse(data['maxNutrients']);
+    this.growthRate = double.parse(data['growthRate']);
+    this.currentNutrients = double.parse(data['currentNutrients']).clamp(0.0, this.maxNutrients);
+  }
+
   Food.random() {
     this.growthRate = 0.5 * R.nextInt(4);
     this.currentNutrients = 0.0;
