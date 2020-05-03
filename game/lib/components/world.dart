@@ -27,7 +27,7 @@ class World extends Component with HasGameRef<MyGame> {
 
   World.empty(int width, int height) {
     cells = Matrix.filled(width, height, emptyCell);
-    List.generate(100, (index) => cells.setElement(R.nextInt(width), R.nextInt(height), R.nextBool() ? Food.random() : barrierCell));
+    List.generate(100, (index) => setCell(R.nextInt(width), R.nextInt(height), R.nextBool() ? Food.random() : barrierCell));
     updateBoard();
   }
 
@@ -40,21 +40,28 @@ class World extends Component with HasGameRef<MyGame> {
     cells = Matrix.filled(width, height, emptyCell);
     if (type == NewWorldType.BORDERED) {
       for (int i = 0; i < width; i++) {
-        cells.setElement(i, 0, barrierCell);
-        cells.setElement(i, height - 1, barrierCell);
+        setCell(i, 0, barrierCell);
+        setCell(i, height - 1, barrierCell);
       }
       for (int i = 0; i < height; i++) {
-        cells.setElement(0, i, barrierCell);
-        cells.setElement(width - 1, i, barrierCell);
+        setCell(0, i, barrierCell);
+        setCell(width - 1, i, barrierCell);
       }
     }
-    List.generate(randomFood, (index) => cells.setElement(R.nextInt(width - 2) + 1, R.nextInt(height - 2) + 1, Food.random()));
-    List.generate(randomBarrier, (index) => cells.setElement(R.nextInt(width - 2) + 1, R.nextInt(height - 2) + 1, barrierCell));
+    List.generate(randomFood, (index) => setCell(R.nextInt(width - 2) + 1, R.nextInt(height - 2) + 1, Food.random()));
+    List.generate(randomBarrier, (index) => setCell(R.nextInt(width - 2) + 1, R.nextInt(height - 2) + 1, barrierCell));
     updateBoard();
   }
 
   Cell getCell(int i, int j) {
     return cells.getElementOrNull(i, j);
+  }
+
+  void setCell(int i, int j, Cell cell) {
+    cell.world = this;
+    cell.i = i;
+    cell.j = j;
+    cells.setElement(i, j, cell);
   }
 
   Future<Image> _redrawCache() {
@@ -114,6 +121,17 @@ class World extends Component with HasGameRef<MyGame> {
 
   void _tick() {
     cells.forEach((i, j, cell) => cell.tick());
+  }
+
+  void moveCell(int i, int j, int dx, int dy) {
+    Cell cell = this.getCell(i, j);
+    Cell dest = this.getCell(i + dx, j + dy);
+    if (dest != emptyCell) {
+      return;
+    }
+
+    setCell(i + dx, j + dy, cell);
+    setCell(i, j, emptyCell);
   }
 
   @override

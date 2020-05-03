@@ -149,18 +149,18 @@ class MyGame extends BaseGame with HasWidgetsOverlay, KeyboardEvents, DoubleTapD
     if (cell != null) {
       if (hud.selectedToolRow == 0) {
         Cell newCell = hud.selectedTool.newCell();
-        world.cells.setElement(i, j, newCell);
+        world.setCell(i, j, newCell);
         world.updateBoard();
       } else if (hud.selectedTool == CellType.FOOD) {
         displayModal('NewFoodModal', (data) {
             Cell newCell = Food.fromData(data);
-            world.cells.setElement(i, j, newCell);
+            world.setCell(i, j, newCell);
             world.updateBoard();
         });
       } else if (hud.selectedTool == CellType.LIFE) {
         displayModal('NewLifeModal', (data) {
             Cell newCell = Life.fromData(data);
-            world.cells.setElement(i, j, newCell);
+            world.setCell(i, j, newCell);
             world.updateBoard();
         });
       }

@@ -41,7 +41,12 @@ class Life extends Cell {
   }
 
   void tick() {
-    // TODO: implement tick
+    // TODO: implement tick properly
+    if (R.nextDouble() > 0.5) {
+      List<List<int>> dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]];
+      int dir = R.nextInt(4);
+      world.moveCell(i, j, dirs[dir][0], dirs[dir][1]);
+    }
   }
 
   String describe() => "A simple life. TODO";
