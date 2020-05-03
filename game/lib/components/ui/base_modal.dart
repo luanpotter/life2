@@ -5,6 +5,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'new_food_modal.dart';
 import 'new_life_modal.dart';
 import 'new_world_modal.dart';
+import 'tick_n_modal.dart';
 
 abstract class BaseModal extends StatelessWidget {
   final void Function(Map<String, dynamic>) createCallback;
@@ -27,12 +28,16 @@ abstract class BaseModal extends StatelessWidget {
         return NewFoodModal(createCallback: createCallback, cancelCallback: cancelCallback);
       case 'NewLifeModal':
         return NewLifeModal(createCallback: createCallback, cancelCallback: cancelCallback);
+      case 'TickNModal':
+        return TickNModal(createCallback: createCallback, cancelCallback: cancelCallback);
       default:
         throw 'Invalid modal name $modal';
     }
   }
 
   GlobalKey<FormBuilderState> formKey();
+
+  String createButtonText() =>  'Create';
 
   Row buttonRow() {
     return Row(

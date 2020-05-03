@@ -11,8 +11,6 @@ import 'components/cells/life.dart';
 import 'components/hud.dart';
 import 'components/selected_cell.dart';
 import 'components/ui/base_modal.dart';
-import 'components/ui/new_food_modal.dart';
-import 'components/ui/new_world_modal.dart';
 import 'components/world.dart';
 import 'constants.dart';
 
@@ -22,12 +20,28 @@ class MyGame extends BaseGame with HasWidgetsOverlay, KeyboardEvents, DoubleTapD
   World world;
   SelectedCell selectedCell;
 
+  // automatically advacnes n ticks every second (0 == paused)
+  int autoTickSpeed = 0;
+  double clock = 0.0;
+
   double blockSize = DEFAULT_CELL_SIZE;
 
   MyGame() {
     add(hud = Hud());
     add(world = World.empty(GRID_WIDTH, GRID_HEIGHT));
     add(selectedCell = SelectedCell());
+  }
+
+  @override
+  void update(double t) {
+    super.update(t);
+    if (autoTickSpeed != 0) {
+      clock += t;
+      if (clock > 1.0) {
+        clock -= 1.0;
+        world.tickN(autoTickSpeed);
+      }
+    }
   }
 
   void displayModal(String modal, void Function(Map<String, dynamic>) handler) {
@@ -61,6 +75,18 @@ class MyGame extends BaseGame with HasWidgetsOverlay, KeyboardEvents, DoubleTapD
     selectedCell.cell = null;
     selectedCell.i = null;
     selectedCell.j = null;
+  }
+
+  void setAutoTickSpeed(int speed) {
+    this.autoTickSpeed = speed;
+    this.clock = 0.0;
+  }
+
+  void tickN() {
+    displayModal('TickNModal', (data) {
+      int n = int.parse(data['n']);
+      world.tickN(n);
+    });
   }
 
   @override

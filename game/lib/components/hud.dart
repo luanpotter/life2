@@ -97,11 +97,25 @@ class Hud extends Component with Resizable, HasGameRef<MyGame> {
     });
     toolsBlock.render(c, size);
 
-    final optionsBlock = toolsBlock.after(4.0);
+    final simulationBlock = toolsBlock.after(4.0);
+    simulationBlock.println('Simulation');
+    simulationBlock.customLine(clicks, (lines) {
+      lines.button('Pause', () => gameRef.setAutoTickSpeed(0), selected: gameRef.autoTickSpeed == 0);
+      lines.button('1x', () => gameRef.setAutoTickSpeed(1), selected: gameRef.autoTickSpeed == 1);
+      lines.button('2x', () => gameRef.setAutoTickSpeed(2), selected: gameRef.autoTickSpeed == 2);
+      lines.button('10x', () => gameRef.setAutoTickSpeed(10), selected: gameRef.autoTickSpeed == 10);
+    });
+    simulationBlock.customLine(clicks, (lines) {
+      lines.button('Tick Once', () => gameRef.world.tickOnce());
+      lines.button('Tick 10', () => gameRef.world.tickN(10));
+      lines.button('Tick n', () => gameRef.tickN());
+    });
+    simulationBlock.render(c, size);
+
+    final optionsBlock = simulationBlock.after(4.0);
     optionsBlock.println('Options');
     optionsBlock.button('New World', clicks, () => gameRef.resetWorld());
     optionsBlock.button('Reset Camera', clicks, () => gameRef.resetCamera());
-    optionsBlock.button('Tick Once', clicks, () => gameRef.world.tickOnce());
     optionsBlock.render(c, size);
   }
 

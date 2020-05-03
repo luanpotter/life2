@@ -32,7 +32,6 @@ class Life extends Cell {
 
   @override
   void render(Canvas c) {
-    
     c.drawRect(size1, paint1);
     c.drawRect(size2, paint2);
     c.drawRect(size3, paint3);

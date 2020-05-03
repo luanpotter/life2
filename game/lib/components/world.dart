@@ -101,11 +101,18 @@ class World extends Component with HasGameRef<MyGame> {
   }
 
   void tickOnce() {
-    tick();
+    _tick();
     updateBoard();
   }
 
-  void tick() {
+  void tickN(int n) {
+    for (var i = 0; i < n; i++) {
+      _tick();
+    }
+    updateBoard();
+  }
+
+  void _tick() {
     cells.forEach((i, j, cell) => cell.tick());
   }
 

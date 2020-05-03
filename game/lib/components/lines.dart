@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'dart:math' as math;
 
 import 'package:flame/text_config.dart';
 import 'package:flutter/painting.dart';
@@ -9,6 +10,7 @@ typedef Renderer = void Function(Canvas, double, double);
 typedef Handler = void Function();
 
 final _buttonBorder = Palette.accent.paint..strokeWidth = 2.0..style = PaintingStyle.stroke;
+final _selectedButtonBorder = Palette.life.paint..strokeWidth = 2.0..style = PaintingStyle.stroke;
 
 class _Line {
   double x;
@@ -17,6 +19,28 @@ class _Line {
   Renderer renderer;
 
   _Line(this.x, this.y, this.height, this.renderer);
+}
+
+class _Button {
+  String text;
+  Handler handler;
+  TextPainter tp;
+  bool selected;
+
+  _Button(TextConfig textConfig, this.text, this.handler, this.selected) {
+    tp = textConfig.toTextPainter(text);
+  }
+}
+
+class Line {
+  TextConfig textConfig;
+  List<_Button> buttons = [];
+
+  Line(this.textConfig);
+
+  void button(String text, Handler handler, { bool selected = false }) {
+    buttons.add(_Button(textConfig, text, handler, selected));
+  }
 }
 
 class Lines {
@@ -41,6 +65,25 @@ class Lines {
     final tp = textConfig.toTextPainter(text);
     _lines.add(_Line(x, y, tp.height, (c, x, y) => tp.paint(c, Offset(x, y))));
     y += tp.height + margin;
+  }
+
+  void customLine(Map<Rect, Handler> clicks, void Function(Line) builder) {
+    Line line = Line(textConfig);
+    builder(line);
+
+    final height = line.buttons.map((e) => e.tp.height).reduce(math.max);
+    _lines.add(_Line(x, y, height, (c, x, y) {
+      double currentX = x;
+      line.buttons.forEach((btn) {
+        Rect rect = Rect.fromLTWH(currentX, y, btn.tp.width + 4.0, btn.tp.height + 4.0);
+        Paint border = btn.selected ? _selectedButtonBorder : _buttonBorder;
+        c.drawRect(rect, border);
+        btn.tp.paint(c, Offset(currentX + 2.0, y + 2.0));
+        clicks[rect] = btn.handler;
+        currentX += btn.tp.width + margin;
+      });
+    }));
+    y += height + margin;
   }
 
   void button(String text, Map<Rect, Handler> clicks, Handler handler) {
